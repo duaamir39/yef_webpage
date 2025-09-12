@@ -1,5 +1,3 @@
-// app/api/test/route.ts
-
 import { NextResponse } from 'next/server';
 import { getConnection, closeConnection } from '@/lib/db';
 import oracledb from 'oracledb';
@@ -9,7 +7,6 @@ export async function GET() {
   try {
     connection = await getConnection();
     
-    // Execute a simple query with type definition
     const result: oracledb.Result<string[]> = await connection.execute(
       `SELECT 'Connection is working!' FROM DUAL`
     );

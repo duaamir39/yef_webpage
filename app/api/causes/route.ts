@@ -2,17 +2,14 @@
 import { NextResponse } from 'next/server';
 import oracledb from 'oracledb';
 
-// It's crucial to store sensitive credentials in a .env.local file
 const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   connectString: process.env.DB_CONNECTION_STRING,
 };
 
-// Define a type for the data returned from the Oracle database query
 type CauseRow = [number, string, string, string];
 
-// In a production environment, use a connection pool
 async function getCausesFromDB() {
   let connection;
   try {
@@ -21,15 +18,12 @@ async function getCausesFromDB() {
       `SELECT id, title, description, image FROM causes_table`
     );
 
-    // Add a null/undefined check for result.rows
     if (!result.rows) {
       return [];
     }
 
-    // Explicitly cast the rows to the defined type to resolve the 'unknown' error
     const rows = result.rows as CauseRow[];
     
-    // Map the result to a clean JSON format
     const causes = rows.map((row) => ({
       id: row[0],
       title: row[1],

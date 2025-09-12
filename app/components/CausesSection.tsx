@@ -27,12 +27,10 @@ const CausesSection = () => {
 
         const data: any = await res.json();
 
-        // Safety check: ensure data is an array
         if (!Array.isArray(data)) {
           throw new Error("Invalid data format received from API");
         }
 
-        // Map and sanitize each item
         const sanitized: Cause[] = data.map((item: any) => ({
           id: item?.id ?? 0,
           title: item?.title ?? "No Title",

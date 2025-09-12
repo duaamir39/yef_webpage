@@ -1,5 +1,3 @@
-// lib/db.ts
-
 import oracledb from 'oracledb';
 
 const dbConfig = {

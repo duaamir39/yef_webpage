@@ -82,7 +82,6 @@ const Navbar = () => {
           </span>
         </div>
 
-        {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-2">
           {navItems.map((item) =>
             item.path ? (
@@ -120,7 +119,6 @@ const Navbar = () => {
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="lg:hidden">

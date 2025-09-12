@@ -53,7 +53,6 @@ const Footer = () => {
   return (
     <footer className="bg-[white] border-t-2 border-[#024da1] text-[#024da1] py-10 px-4 mt-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
-        {/* Left Column */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
           <div className="flex items-center">
             <Image src="/images/logo.jpeg" alt="YEF Logo" width={50} height={50} className="mr-2" />
@@ -75,7 +74,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Center Column - Nav Links */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16">
           {footerNavItems.map((section) => (
             <div key={section.title} className="text-center md:text-left">
@@ -93,7 +91,6 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Right Column - Newsletter & Donate */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
           <h4 className="text-lg font-bold">Stay Updated</h4>
           <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full max-w-xs">

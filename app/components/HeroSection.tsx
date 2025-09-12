@@ -10,10 +10,10 @@ const HeroSection = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768); // md breakpoint
+      setIsSmallScreen(window.innerWidth < 768); 
     };
 
-    handleResize(); // check on mount
+    handleResize(); 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
