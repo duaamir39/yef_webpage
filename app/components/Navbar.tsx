@@ -1,18 +1,22 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, ChevronDown, X } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, ChevronDown, X } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import LogoutButton from "./LogoutButton";
+import DonateButton from "./DonateButton";
+import UserAvatar from "./UserAvatar";
 
 interface NavItem {
   name: string;
@@ -21,47 +25,48 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { name: 'Home', path: '/' },
+  { name: "Home", path: "/" },
   {
-    name: 'About Us',
+    name: "About Us",
     dropdown: [
-      { name: 'Vision & Mission', path: '/about-us/our-story' },
-      { name: 'Team & Leadership', path: '/about-us/team' },
-      { name: 'Partners', path: '/about-us/partners' },
-      { name: 'Impact', path: '/about-us/impact' },
+      { name: "Vision & Mission", path: "/about-us/our-story" },
+      { name: "Team & Leadership", path: "/about-us/team" },
+      { name: "Partners", path: "/about-us/partners" },
+      { name: "Impact", path: "/about-us/impact" },
     ],
   },
   {
-    name: 'Programs',
+    name: "Programs",
     dropdown: [
-      { name: 'Projects', path: '/programs/projects' },
-      { name: 'Events', path: '/programs/events' },
-      { name: 'Courses', path: '/programs/courses' },
+      { name: "Projects", path: "/programs/projects" },
+      { name: "Events", path: "/programs/events" },
+      { name: "Courses", path: "/programs/courses" },
     ],
   },
   {
-    name: 'Get Involved',
+    name: "Get Involved",
     dropdown: [
-      { name: 'Volunteer', path: '/get-involved/volunteer' },
-      { name: 'Membership', path: '/get-involved/membership' },
-      { name: 'Careers', path: '/get-involved/careers' },
-      { name: 'login', path: '/get-involved/login' },
+      { name: "Volunteer", path: "/get-involved/volunteer" },
+      { name: "Membership", path: "/get-involved/membership" },
+      { name: "Careers", path: "/get-involved/careers" },
+      { name: "login", path: "/get-involved/login" },
     ],
   },
   {
-    name: 'Media',
+    name: "Media",
     dropdown: [
-      { name: 'Blog', path: '/blog/stories' },
-      { name: 'Gallery', path: '/blog/gallery' },
+      { name: "Blog", path: "/blog/stories" },
+      { name: "Gallery", path: "/blog/gallery" },
     ],
   },
-  { name: 'Contact Us', path: '/contact-us' },
+  { name: "Contact Us", path: "/contact-us" },
 ];
 
 const Navbar = () => {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
+  const { data: session } = useSession();
 
   const handleLinkClick = () => {
     setMobileOpen(false);
@@ -100,7 +105,10 @@ const Navbar = () => {
             ) : (
               <DropdownMenu key={item.name}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-[#024da1] hover:text-[#013a7c] hover:bg-transparent">
+                  <Button
+                    variant="ghost"
+                    className="text-[#024da1] hover:text-[#013a7c] hover:bg-transparent"
+                  >
                     {item.name}
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
@@ -108,16 +116,16 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   {item.dropdown?.map((subItem) => (
                     <DropdownMenuItem key={subItem.name} asChild>
-                      <Link href={subItem.path || '#'}>{subItem.name}</Link>
+                      <Link href={subItem.path || "#"}>{subItem.name}</Link>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             )
           )}
-          <Button asChild className="bg-[#024da1] hover:bg-[#013a7c]">
-            <Link href="/donate">Donate</Link>
-          </Button>
+          <DonateButton />
+          {/* AUTH SECTION - DESKTOP */}
+          {session ? <UserAvatar /> : null}
         </div>
 
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -163,7 +171,7 @@ const Navbar = () => {
                               asChild
                               onClick={handleLinkClick}
                             >
-                              <Link href={subItem.path || '#'}>
+                              <Link href={subItem.path || "#"}>
                                 {subItem.name}
                               </Link>
                             </Button>
@@ -174,9 +182,34 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
-              <Button asChild className="w-full bg-[#024da1] hover:bg-[#013a7c]">
-                <Link href="/donate" onClick={handleLinkClick}>Donate</Link>
+              <Button
+                asChild
+                className="w-full bg-[#024da1] hover:bg-[#013a7c]"
+              >
+                <div className="w-full" onClick={handleLinkClick}>
+                  <DonateButton />
+                </div>
               </Button>
+              {/* AUTH SECTION - MOBILE */}
+              {session ? (
+                <div className="w-full border-t pt-4 mt-4">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600">
+                      Hello, {session.user?.name}
+                    </p>
+                    <Button
+                      variant="ghost"
+                      className="w-full text-[#024da1] hover:text-[#013a7c] mt-2"
+                      onClick={() => {
+                        handleLinkClick();
+                        signOut({ redirect: true, callbackUrl: "/" });
+                      }}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </SheetContent>
         </Sheet>

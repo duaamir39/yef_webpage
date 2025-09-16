@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import DonateButton from './DonateButton';
 
 const HeroSection = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -45,9 +44,8 @@ const HeroSection = () => {
             <h2 className="font-bold text-gray-800 mb-3 max-w-xl text-md sm:text-lg">
               YOUTH EMPOWERMENT, SUSTAINABILITY, EDUCATION, AND UNITY FOR GLOBAL CHANGE.
             </h2>
-            <Button asChild className="bg-[#024da1] hover:bg-[#1565c0] rounded-lg px-6 py-3 text-white text-lg">
-              <Link href="/donate">Donate</Link>
-            </Button>
+            {/* Replaced Button with DonateButton */}
+            <DonateButton />
           </div>
         </div>
       </div>

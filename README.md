@@ -45,32 +45,6 @@ Use these hex codes for backgrounds, text, and other elements to maintain a cons
 
 Make sure you have Node.js and npm (or yarn/pnpm) installed on your machine. You will also need to set up the Oracle Database client.
 
-### Oracle Database Setup
-
-1.  **Download Oracle Database XE and Instant Client:**
-
-    - **Oracle Database XE:** [Download here](https://www.oracle.com/database/technologies/xe-downloads.html)
-    - **Oracle Instant Client:** [Download here](https://www.oracle.com/database/technologies/instant-client/downloads.html)
-
-2.  **Install the Database and Client:** Follow the installation guides on the download pages. After installation, you must set environment variables to configure the client.
-
-    For example, on Windows:
-
-    ```bash
-    # Set the path to your Instant Client installation directory
-    set OCI_LIB_DIR=C:\oracle\instantclient_21_9
-    set PATH=%PATH%;%OCI_LIB_DIR%
-    ```
-
-    For example, on Linux:
-
-    ```bash
-    # Set the path to your Instant Client installation directory
-    export OCI_LIB_DIR=/usr/local/lib/instantclient_21_9
-    export LD_LIBRARY_PATH=$OCI_LIB_DIR:$LD_LIBRARY_PATH
-    ```
-
-3.  **Install VS Code Extension:** For easier development and database management, install the "Oracle SQL Developer" extension in Visual Studio Code.
 
 ### Installation
 
@@ -124,3 +98,132 @@ The `package.json` file includes the following scripts for development and build
 - `npm run build`: Builds the application for production with Turbopack.
 - `npm run start`: Starts the production server.
 - `npm run lint`: Lints the codebase using ESLint to enforce code style.
+
+
+
+
+
+
+
+# 🔐 Authentication System Documentation
+
+## 📋 Overview
+
+We've implemented a modern, seamless authentication system for Youth Evolution Foundation using NextAuth.js v5 with MongoDB. The system features modal-based authentication that maintains user context without page redirects.
+
+## 🚀 Features
+
+- **Modal-based Authentication** - No page reloads, maintains user context
+- **MongoDB Integration** - Secure user data storage
+- **Protected Routes** - Automatic redirect for unauthenticated users
+- **Responsive Design** - Works on desktop and mobile
+- **Seamless UX** - Users continue their action after authentication
+
+## 🛠 Tech Stack
+
+- **Next.js 15.5.3** - React framework
+- **NextAuth.js v5** - Authentication
+- **MongoDB** - Database
+- **Radix UI** - Accessible components
+- **Tailwind CSS** - Styling
+- **Lucide React** - Icons
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── context/
+│   │   └── AuthContext.tsx          # Authentication state management
+│   ├── components/
+│   │   ├── AuthModal.tsx            # Authentication modal
+│   │   ├── DonateButton.tsx         # Protected action button
+│   │   ├── UserAvatar.tsx           # User profile dropdown
+│   │   ├── ApplyButton.tsx          # Course application button
+│   │   └── Navbar.tsx               # Updated with auth controls
+│   ├── api/
+│   │   └── auth/
+│   │       ├── [...nextauth]/
+│   │       │   └── route.ts         # NextAuth API route
+│   │       └── register/
+│   │           └── route.ts         # User registration API
+│   └── donate/
+│       └── page.tsx                 # Protected donation page
+├── auth.ts                          # NextAuth configuration
+└── lib/
+    └── mongodb.ts                   # Database connection
+```
+
+## 🔧 Setup Instructions
+
+### 1. Environment Variables
+```env
+MONGODB_URI=------------------
+NEXTAUTH_URL=-----------------
+NEXTAUTH_SECRET=--------------
+```
+
+### 2. Installation
+```bash
+npm install next-auth@beta mongodb mongoose bcryptjs
+npm install -D @types/bcryptjs
+```
+
+### 3. Database Setup
+MongoDB collections are automatically created by NextAuth.js:
+- `users` - User accounts and profiles
+- `accounts` - OAuth connections
+- `sessions` - Active user sessions
+- `verificationTokens` - Email verification
+
+## 🎯 How It Works
+
+### Authentication Flow
+1. User clicks protected action (Donate, Apply)
+2. Auth modal appears if not authenticated
+3. User can login or register within modal
+4. After authentication, user is redirected to intended action
+5. Session persists across navigation
+
+### Modal Components
+- **AuthModal** - Combined login/register forms
+- **DonateButton** - Protected donation action
+- **ApplyButton** - Protected course application
+- **UserAvatar** - User profile and logout dropdown
+
+
+## 🎨 Customization
+
+### Styling the Auth Modal
+Edit `app/components/AuthModal.tsx`:
+- Modify background: `bg-transparent backdrop-blur-md`
+- Change colors: `text-[#024da1]`, `bg-[#024da1]`
+- Adjust form layout and spacing
+
+### Adding New Protected Actions
+1. Create new button component following `DonateButton` pattern
+2. Add to relevant pages
+3. Update middleware if new routes need protection
+
+## 🐛 Troubleshooting
+
+### Common Issues
+1. **MongoDB Connection** - Check `MONGODB_URI` in environment variables
+2. **Session Not Persisting** - Verify `NEXTAUTH_SECRET` is set
+3. **Modal Not Opening** - Check AuthContext provider in layout
+
+
+
+## 📈 Performance Notes
+
+- **Optimized Images** - Next.js Image component for logos
+- **Efficient Rerenders** - Context API prevents unnecessary updates
+- **Lazy Loading** - Components load only when needed
+
+## 🔄 Future Enhancements
+
+- [ ] Social login (Google, Facebook)
+- [ ] Email verification
+- [ ] Password reset flow
+- [ ] Two-factor authentication
+- [ ] Admin role management
