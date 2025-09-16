@@ -29,7 +29,7 @@ const HeroSection = () => {
           style={isSmallScreen ? {} : { clipPath: 'circle(90.7% at 1% 27%)' }}
         >
           <Image
-            src="/images/logo.jpeg"
+            src="/images/logo.jpg"
             alt="YEF Logo"
             width={300}
             height={300}

@@ -4,7 +4,6 @@ import './globals.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HeroSection from './components/HeroSection';
-import CausesSection from './components/CausesSection';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -23,7 +22,6 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-grow">
           <HeroSection/>
-          <CausesSection/>
           {children}
         </main>
         <Footer />
