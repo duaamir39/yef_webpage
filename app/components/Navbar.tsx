@@ -14,7 +14,6 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, ChevronDown, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import LogoutButton from "./LogoutButton";
 import DonateButton from "./DonateButton";
 import UserAvatar from "./UserAvatar";
 
@@ -77,7 +76,7 @@ const Navbar = () => {
       <nav className="container mx-auto flex items-center justify-between h-16 px-4">
         <div className="flex items-center space-x-2">
           <Image
-            src="/images/logo.jpeg"
+            src="/images/logo.JPG"
             alt="YEF Logo"
             width={40}
             height={40}

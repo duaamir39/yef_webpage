@@ -121,7 +121,7 @@ export default function AuthModal() {
         <div className="text-center mb-6">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-white p-2 border border-gray-200">
             <Image
-              src="/images/logo.jpeg"
+              src="/images/logo.JPG"
               alt="YEF Logo"
               width={64}
               height={64}

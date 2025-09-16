@@ -55,7 +55,7 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
         <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">
           <div className="flex items-center">
-            <Image src="/images/logo.jpeg" alt="YEF Logo" width={50} height={50} className="mr-2" />
+            <Image src="/images/logo.JPG" alt="YEF Logo" width={50} height={50} className="mr-2" />
             <h3 className="text-xl font-bold">Youth Evolution Foundation</h3>
           </div>
           <p className="text-sm max-w-sm">
