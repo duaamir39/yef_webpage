@@ -26,7 +26,7 @@ export default async function TeamPage() {
         {teamMembers.map((member: any) => (
           <div 
             key={member._id} 
-            className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl border-4 border-[#024da1]"
+            className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl"
           >
             {member.image && (
               <div className="relative w-full h-96"> 
