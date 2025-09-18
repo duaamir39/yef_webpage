@@ -29,13 +29,13 @@ export default async function TeamMemberPage({ params }: { params: { slug: strin
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-12 flex flex-col md:flex-row items-center md:items-start md:space-x-12">
-      <div className="relative w-full h-[300px] mb-8 md:mb-0 md:w-1/3 md:h-[400px] flex-shrink-0">
+      <div className="relative w-2/3 md:w-1/3 mb-8 md:mb-0 aspect-[4/3] flex-shrink-0">
         {member.image && (
           <Image
             src={urlForImage(member.image).url()}
             alt={member.name}
             fill
-            className="rounded-lg shadow-lg object-cover"
+            className="object-contain"
           />
         )}
       </div>

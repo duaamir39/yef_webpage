@@ -2,7 +2,6 @@
 import tailwind from "@tailwindcss/postcss";
 import autoprefixer from "autoprefixer";
 
-// Detect whether we're running Sanity Studio or Next.js
 const isSanity = process.argv.some(arg => arg.includes("sanity")) 
   || process.env.SANITY_STUDIO_BUILD === "true";
 

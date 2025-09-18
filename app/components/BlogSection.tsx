@@ -4,8 +4,7 @@ import { groq } from 'next-sanity';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// GROQ query to fetch all blog posts with their main image, title, slug, and short description
-const BLOG_POSTS_QUERY = groq`*[_type == "blog"] | order(_createdAt desc) {
+const BLOG_POSTS_QUERY = groq`*[_type == "blog"] | order(_createdAt desc) [0...3] {
   _id,
   title,
   "slug": slug.current,
@@ -18,7 +17,7 @@ export default async function BlogSection() {
 
   return (
     <section className="container mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold mb-8 text-center text-[#024da1]">Our Blogs</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center text-[#024da1]">Latest Blogs</h2>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post: any) => (
           <div key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
