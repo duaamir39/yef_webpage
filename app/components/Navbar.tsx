@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
       { name: "Vision & Mission", path: "/about-us/our-story" },
       { name: "Team & Leadership", path: "/about-us/team" },
       { name: "Partners", path: "/about-us/partners" },
-      { name: "Impact", path: "/about-us/impact" },
+      { name: "Impact/Achievements", path: "/about-us/impact" },
     ],
   },
   {
