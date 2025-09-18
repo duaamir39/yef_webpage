@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { toPlainText } from '@portabletext/react';
 
-const TEAM_MEMBERS_QUERY = groq`*[_type == "teamMember"] {
+const TEAM_MEMBERS_QUERY = groq`*[_type == "teamMember"] | order(_createdAt desc) [0...3] {
   _id,
   name,
   title,
@@ -18,6 +18,7 @@ export const revalidate = 60;
 
 export default async function TeamPage() {
   const teamMembers = await client.fetch(TEAM_MEMBERS_QUERY);
+
 
   return (
     <div className="container mx-auto px-4 py-12">
