@@ -16,6 +16,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Youth Evolution Foundation",
   description: "Empowering the youth for a better future.",
+  icons: [{ rel: "icon", url: "/images/logo.JPG" }],
 };
 
 export default async function RootLayout({

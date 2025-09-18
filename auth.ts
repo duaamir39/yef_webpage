@@ -1,4 +1,7 @@
 // auth.ts
+export const runtime = "nodejs";
+
+
 import NextAuth, { type DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { authAdapter } from "./lib/auth-adapter";
