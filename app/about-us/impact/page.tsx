@@ -97,7 +97,13 @@ export default function ImpactPage() {
       cover: "/achievements/beach1.jpg",
       description:
         "YEF successfully conducted a Beach Cleaning Drive at Sea View Karachi under its Cleanliness initiative, aligning with UN SDGs for clean water, sustainability, and climate action.",
-      images: ["/achievements/beach1.jpg", "/achievements/beach2.jpg"],
+      images: ["/achievements/beach1.jpg", "/achievements/beach2.jpg", "/achievements/beach3.jpg",
+        "/achievements/beach4.jpg",
+        "/achievements/beach5.jpg",
+        "/achievements/beach6.jpg",
+        "/achievements/beach7.jpg",
+        "/achievements/beach8.jpg"
+      ],
     },
   ];
 
@@ -191,27 +197,43 @@ export default function ImpactPage() {
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {achievements.map((a, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
-              onClick={() => setSelected(a)}
-            >
-              <img
-                src={a.cover}
-                alt={a.title}
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-4 text-center">
-                <h3 className="text-xl font-semibold text-gray-800">
-                  {a.title}
-                </h3>
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Swiper with Pagination (6 per page) */}
+        <Swiper
+          spaceBetween={30}
+          navigation
+          pagination={{ clickable: true }}
+          modules={[Pagination, Navigation]}
+          className="max-w-6xl mx-auto"
+        >
+          {Array.from({ length: Math.ceil(achievements.length / 6) }).map(
+            (_, pageIndex) => (
+              <SwiperSlide key={pageIndex}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {achievements
+                    .slice(pageIndex * 6, pageIndex * 6 + 6)
+                    .map((a, i) => (
+                      <div
+                        key={i}
+                        className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
+                        onClick={() => setSelected(a)}
+                      >
+                        <img
+                          src={a.cover}
+                          alt={a.title}
+                          className="w-full h-56 object-cover"
+                        />
+                        <div className="p-4 text-center">
+                          <h3 className="text-xl font-semibold text-gray-800">
+                            {a.title}
+                          </h3>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </SwiperSlide>
+            )
+          )}
+        </Swiper>
 
         {/* Modal */}
         {selected && (
@@ -219,11 +241,15 @@ export default function ImpactPage() {
             <div className="bg-white rounded-2xl max-w-3xl w-full overflow-hidden relative">
               {/* Close Button */}
               <button
-                onClick={() => setSelected(null)}
-                className="absolute top-3 right-3 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center"
-              >
-                ✕
-              </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    setSelected(null);
+  }}
+  className="absolute top-3 right-3 z-50 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center"
+>
+  ✕
+</button>
+
 
               {/* Swiper with Images */}
               <Swiper
@@ -255,13 +281,6 @@ export default function ImpactPage() {
           </div>
         )}
       </section>
-
-      {/* Rest of your sections (Stories, What We Do, Transparency, CTA) */}
-      {/* ... paste them here exactly as you already had ... */}
-    </div>
-  );
-}
-
 
       {/* What We Do */}
       <section className="px-6 max-w-6xl mx-auto">
@@ -350,19 +369,22 @@ export default function ImpactPage() {
       </section>
 
       {/* Call to Action */}
-<section className="text-center py-20 px-6 bg-gradient-to-r from-indigo-800 to-indigo-900 text-white">
-  <h2 className="text-4xl font-extrabold mb-8 tracking-tight">
-    Join Us in Building a Brighter Future
-  </h2>
-  <div className="flex justify-center gap-6 flex-wrap">
-    <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-      Donate Now
-    </Button>
-    <Button className="bg-indigo-600 hover:bg-indigo-500 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-      Volunteer With Us
-    </Button>
-    <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-      Partner With YEF
-    </Button>
-  </div>
-</section>
+      <section className="text-center py-20 px-6 bg-gradient-to-r from-indigo-800 to-indigo-900 text-white">
+        <h2 className="text-4xl font-extrabold mb-8 tracking-tight">
+          Join Us in Building a Brighter Future
+        </h2>
+        <div className="flex justify-center gap-6 flex-wrap">
+          <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
+            Donate Now
+          </Button>
+          <Button className="bg-indigo-600 hover:bg-indigo-500 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
+            Volunteer With Us
+          </Button>
+          <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
+            Partner With YEF
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+}
