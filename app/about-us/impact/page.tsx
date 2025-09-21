@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -11,9 +11,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
+import { client } from "@/sanity/lib/client";
+import imageUrlBuilder from "@sanity/image-url";
+
+// ✅ Sanity Builder
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source).url();
+}
 
 // ✅ Achievement type
 type Achievement = {
+  _id: string;
   title: string;
   cover: string;
   description: string;
@@ -23,89 +32,24 @@ type Achievement = {
 export default function ImpactPage() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
   const [selected, setSelected] = useState<Achievement | null>(null);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
 
-  // ✅ Achievements Data
-  const achievements: Achievement[] = [
-    {
-      title: "Seminar: Reclaiming Nature",
-      cover: "/achievements/seminar1.jpg",
-      description:
-        "YEF proudly organized a seminar at Federal Urdu University on “Reclaiming Nature & Biodiversity Awareness,” engaging youth on environmental preservation with inspiring talks from our leaders.",
-      images: [
-        "/achievements/seminar1.jpg",
-        "/achievements/seminar2.jpg",
-        "/achievements/seminar3.jpg",
-      ],
-    },
-    {
-      title: "Plantation Drive",
-      cover: "/achievements/plantation1.jpg",
-      description:
-        "After the seminar, YEF collaborated with Federal Urdu University students for a meaningful Plantation Drive—every plant a promise for a greener tomorrow.",
-      images: [
-        "/achievements/plantation1.jpg",
-        "/achievements/plantation2.jpg",
-      ],
-    },
-    {
-      title: "Hearts & Mind Talks 2025",
-      cover: "/achievements/speaker1.jpg",
-      description:
-        "Our Co-Founder & COO, Usama Akhtar, was invited as Guest Speaker at Hearts & Mind Talks 2025, where he shared his inspiring journey and vision of leadership through empathy.",
-      images: ["/achievements/speaker1.jpg", "/achievements/speaker2.jpg"],
-    },
-    {
-      title: "Teachers Training Workshop",
-      cover: "/achievements/teachers1.jpg",
-      description:
-        "YEF successfully conducted Day 1 of its 3-Day Teachers Training Workshop at Gulshan Public School, empowering teachers with MS Office skills and preparing them for AI & Graphic Design sessions ahead.",
-      images: ["/achievements/teachers1.jpg", "/achievements/teachers2.jpg"],
-    },
-    {
-      title: "Marka-e-Haq Closing Ceremony",
-      cover: "/achievements/marka1.jpg",
-      description:
-        "YEF proudly participated in the Marka-e-Haq closing ceremony at Arts Council Karachi, onboarding passionate volunteers while also celebrating culture with a soulful Qawali performance.",
-      images: ["/achievements/marka1.jpg", "/achievements/marka2.jpg"],
-    },
-    {
-      title: "Jashn-e-Umeed",
-      cover: "/achievements/jashn1.jpg",
-      description:
-        "YEF, in collaboration with Youth Parliament and TMC Chanesar, organized “Jashn-e-Umeed” on 10th August 2025 with orphanage children—celebrating Independence Day with joy, gifts, and unity.",
-      images: ["/achievements/jashn1.jpg", "/achievements/jashn2.jpg"],
-    },
-    {
-      title: "Independence Day at SSUET",
-      cover: "/achievements/ssuet1.jpg",
-      description:
-        "YEF celebrated Pakistan’s 78th Independence Day with a cake cutting and plantation drive at SSUET, joined by CEO Adil Zaman, CMO Abrar ul Haq, and passionate youth volunteers.",
-      images: ["/achievements/ssuet1.jpg", "/achievements/ssuet2.jpg"],
-    },
-    {
-      title: "Dar-ul-Sukun Visit",
-      cover: "/achievements/darulsukun1.jpg",
-      description:
-        "YEF visited Dar-ul-Sukun, spending a heartwarming day with special children—sharing gifts, games, and joy while learning values of gratitude, resilience, and humanity.",
-      images: [
-        "/achievements/darulsukun1.jpg",
-        "/achievements/darulsukun2.jpg",
-      ],
-    },
-    {
-      title: "Beach Cleaning Drive",
-      cover: "/achievements/beach1.jpg",
-      description:
-        "YEF successfully conducted a Beach Cleaning Drive at Sea View Karachi under its Cleanliness initiative, aligning with UN SDGs for clean water, sustainability, and climate action.",
-      images: ["/achievements/beach1.jpg", "/achievements/beach2.jpg", "/achievements/beach3.jpg",
-        "/achievements/beach4.jpg",
-        "/achievements/beach5.jpg",
-        "/achievements/beach6.jpg",
-        "/achievements/beach7.jpg",
-        "/achievements/beach8.jpg"
-      ],
-    },
-  ];
+  // ✅ Fetch data from Sanity
+  useEffect(() => {
+    async function fetchData() {
+      const data = await client.fetch(
+        `*[_type == "achievement"] | order(_createdAt desc){
+          _id,
+          title,
+          description,
+          "cover": cover.asset->url,
+          "images": images[].asset->url
+        }`
+      );
+      setAchievements(data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="flex flex-col space-y-20">
@@ -211,9 +155,9 @@ export default function ImpactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {achievements
                     .slice(pageIndex * 6, pageIndex * 6 + 6)
-                    .map((a, i) => (
+                    .map((a) => (
                       <div
-                        key={i}
+                        key={a._id}
                         className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
                         onClick={() => setSelected(a)}
                       >
@@ -241,15 +185,14 @@ export default function ImpactPage() {
             <div className="bg-white rounded-2xl max-w-3xl w-full overflow-hidden relative">
               {/* Close Button */}
               <button
-  onClick={(e) => {
-    e.stopPropagation();
-    setSelected(null);
-  }}
-  className="absolute top-3 right-3 z-50 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center"
->
-  ✕
-</button>
-
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(null);
+                }}
+                className="absolute top-3 right-3 z-50 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center"
+              >
+                ✕
+              </button>
 
               {/* Swiper with Images */}
               <Swiper
@@ -261,7 +204,7 @@ export default function ImpactPage() {
                 modules={[Pagination, Navigation]}
                 className="w-full h-80"
               >
-                {selected.images.map((img, i) => (
+                {selected.images?.map((img, i) => (
                   <SwiperSlide key={i}>
                     <img
                       src={img}
