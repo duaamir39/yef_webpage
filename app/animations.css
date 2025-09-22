@@ -1,4 +1,3 @@
-/* Shimmer effect */
 @keyframes shimmer {
   0% { background-position: -500px 0; }
   100% { background-position: 500px 0; }
@@ -15,7 +14,6 @@
   animation: shimmer 1.5s infinite linear;
 }
 
-/* Slow fade-in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
