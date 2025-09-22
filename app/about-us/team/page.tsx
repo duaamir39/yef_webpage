@@ -17,7 +17,6 @@ const TEAM_MEMBERS_QUERY = groq`*[_type == "teamMember"] {
   bio
 }`;
 
-// Skeleton component with shimmer effect
 const TeamMemberSkeleton = () => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
     <div className="relative w-full aspect-[4/3] bg-gray-200 shimmer"></div>
@@ -55,20 +54,17 @@ export default function TeamPage() {
       <h1 className="text-4xl font-bold mb-12 text-center text-[#024da1]">Our Team</h1>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
-          // Render shimmer skeleton cards
           Array.from({ length: 6 }).map((_, index) => (
             <div key={index}>
               <TeamMemberSkeleton />
             </div>
           ))
         ) : (
-          // Render actual team member cards
           teamMembers.map((member: any, idx) => (
             <div
               key={member._id}
               className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg flex flex-col"
             >
-              {/* Image fades in first */}
               {member.image && (
                 <div
                   className="relative w-full aspect-[4/3] opacity-0 fade-in"
@@ -83,7 +79,6 @@ export default function TeamPage() {
                 </div>
               )}
 
-              {/* Text fades in after image */}
               <div
                 className="p-6 text-center flex-grow flex flex-col justify-between opacity-0 fade-in"
                 style={{ animationDelay: `${idx * 0.2 + 0.5}s` }}

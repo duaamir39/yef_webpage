@@ -15,7 +15,6 @@ const POST_QUERY = groq`*[_type == "blog" && slug.current == $slug][0] {
   body,
 }`;
 
-// Skeleton loader
 const BlogPostSkeleton = () => (
   <div className="container mx-auto px-4 py-6 md:py-12 max-w-4xl">
     <div className="flex flex-col items-center">
@@ -31,7 +30,7 @@ const BlogPostSkeleton = () => (
 );
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params); // ✅ unwrap params
+  const { slug } = use(params); 
 
   const [post, setPost] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +61,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
   return (
     <div className="container mx-auto px-4 py-6 md:py-12 max-w-4xl">
       <div className="flex flex-col items-center">
-        {/* Title fade-in first */}
+        
         <h1
           className="text-4xl font-bold text-gray-800 mb-6 text-center opacity-0 fade-in"
           style={{ animationDelay: '0.1s' }}
@@ -70,7 +69,6 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           {post.title}
         </h1>
 
-        {/* Image fade-in second */}
         {post.mainImage && (
           <div
             className="relative w-full max-w-3xl aspect-[4/3] mb-8 opacity-0 fade-in"
@@ -85,7 +83,6 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           </div>
         )}
 
-        {/* Body fade-in last */}
         <div
           className="prose lg:prose-xl text-gray-700 opacity-0 fade-in"
           style={{ animationDelay: '0.8s' }}

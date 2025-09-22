@@ -15,7 +15,6 @@ const BLOG_POSTS_QUERY = groq`*[_type == "blog"] | order(_createdAt desc) {
   shortDescription,
 }`;
 
-// Skeleton card with shimmer
 const BlogSkeleton = () => (
   <div className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
     <div className="relative w-full aspect-[4/3] bg-gray-200 shimmer"></div>
@@ -52,15 +51,14 @@ export default function BlogSection() {
       <h2 className="text-3xl font-bold mb-8 text-center text-[#024da1]">Our Blogs</h2>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {isLoading
-          ? // Show shimmer skeletons
+          ? 
             Array.from({ length: 6 }).map((_, i) => <BlogSkeleton key={i} />)
-          : // Render blog cards with fade-in stagger
+          : 
             posts.map((post, idx) => (
               <div
                 key={post._id}
                 className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl flex flex-col"
               >
-                {/* Image fades first */}
                 {post.mainImage && (
                   <div
                     className="relative w-full aspect-[4/3] opacity-0 fade-in"
@@ -75,7 +73,6 @@ export default function BlogSection() {
                   </div>
                 )}
 
-                {/* Text fades later */}
                 <div
                   className="p-6 opacity-0 fade-in"
                   style={{ animationDelay: `${idx * 0.2 + 0.3}s` }}

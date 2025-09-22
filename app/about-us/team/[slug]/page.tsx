@@ -16,7 +16,6 @@ const TEAM_MEMBER_QUERY = groq`*[_type == "teamMember" && slug.current == $slug]
   bio
 }`;
 
-// Skeleton for single team member page
 const TeamMemberSkeleton = () => (
   <div className="container mx-auto px-4 py-6 md:py-12 flex flex-col md:flex-row items-center md:items-start md:space-x-12">
     <div className="relative w-2/3 md:w-1/3 mb-8 md:mb-0 aspect-[4/3] flex-shrink-0 bg-gray-200 shimmer"></div>
@@ -33,7 +32,7 @@ const TeamMemberSkeleton = () => (
 );
 
 export default function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params); // ✅ unwrap params
+  const { slug } = use(params); 
 
   const [member, setMember] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,7 +62,6 @@ export default function TeamMemberPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-12 flex flex-col md:flex-row items-center md:items-start md:space-x-12">
-      {/* Image fades in first */}
       <div
         className="relative w-2/3 md:w-1/3 mb-8 md:mb-0 aspect-[4/3] flex-shrink-0 overflow-hidden rounded-2xl bg-white opacity-0 fade-in"
         style={{ animationDelay: '0.2s' }}
@@ -78,7 +76,6 @@ export default function TeamMemberPage({ params }: { params: Promise<{ slug: str
         )}
       </div>
 
-      {/* Text fades in after image */}
       <div
         className="flex flex-col text-center md:text-left md:w-2/3 opacity-0 fade-in"
         style={{ animationDelay: '1s' }}
