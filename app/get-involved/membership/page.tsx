@@ -1,9 +1,9 @@
-// app/about-us/impact/page.tsx
-export default function ImpactPage() {
+// app/get-involved/membership/page.tsx
+export default function MembershipPage() {
   return (
-    <div>
-      <h1>Our Impact</h1>
-      <p>This is the Impact page content.</p>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Membership</h1>
+      <p>Content for the Membership page...</p>
     </div>
-  );
+  )
 }

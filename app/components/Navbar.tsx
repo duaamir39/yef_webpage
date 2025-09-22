@@ -48,7 +48,6 @@ const navItems: NavItem[] = [
       { name: "Volunteer", path: "/get-involved/volunteer" },
       { name: "Membership", path: "/get-involved/membership" },
       { name: "Careers", path: "/get-involved/careers" },
-      { name: "login", path: "/get-involved/login" },
     ],
   },
   {

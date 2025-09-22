@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+/** @type {import('tailwindcss').Config} */
 
 const config = {
   content: [
@@ -12,6 +12,5 @@ const config = {
     },
   },
   plugins: [],
-} satisfies Config;
+} 
 
-export default config;

@@ -1,4 +1,3 @@
-// app/about-us/impact/page.tsx
 export default function ImpactPage() {
   return (
     <div>

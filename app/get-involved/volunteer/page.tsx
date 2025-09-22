@@ -1,9 +1,8 @@
-// app/about-us/impact/page.tsx
-export default function ImpactPage() {
+export default function VolunteerPage() {
   return (
-    <div>
-      <h1>Our Impact</h1>
-      <p>This is the Impact page content.</p>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Volunteer</h1>
+      <p>Content for the Volunteer page...</p>
     </div>
-  );
+  )
 }
