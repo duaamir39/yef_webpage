@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
+import { FaGoogle } from 'react-icons/fa';
 
 export default function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, redirectAfterAuth } = useAuth();
@@ -244,7 +245,18 @@ export default function AuthModal() {
               : "Already have an account? Sign in"}
           </button>
         </div>
-
+ <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3 className="text-center text-sm text-gray-600 mb-4">Or continue with</h3>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => signIn('google')} 
+                className="flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+              >
+                <FaGoogle className="h-5 w-5 mr-2" />
+                Google
+              </button>
+            </div>
+          </div>
         <div className="mt-6 pt-6 border-t border-gray-200">
           <p className="text-xs text-gray-500 text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy

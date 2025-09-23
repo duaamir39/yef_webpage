@@ -1,9 +1,8 @@
-// auth.ts
 export const runtime = "nodejs";
-
 
 import NextAuth, { type DefaultSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { authAdapter } from "./lib/auth-adapter";
 import bcrypt from "bcryptjs";
 import clientPromise from "./lib/mongodb";
@@ -58,6 +57,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.name,
         };
       },
+    }),
+    
+    GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   callbacks: {
