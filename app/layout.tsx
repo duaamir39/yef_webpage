@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { AuthProvider } from "./context/AuthContext";
 import AuthModal from "./components/AuthModal";
-
+import Chatbot from './components/Chatbot';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -36,6 +36,7 @@ export default async function RootLayout({
             </main>
             <Footer />
             <AuthModal />
+            <Chatbot /> 
           </AuthProvider>
         </SessionProvider>
       </body>
