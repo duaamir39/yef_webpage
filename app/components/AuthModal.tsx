@@ -1,4 +1,3 @@
-// app/components/AuthModal.tsx
 "use client";
 
 import Image from 'next/image';
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useAuth } from "../context/AuthContext";
+import Link from "next/link";
 
 export default function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, redirectAfterAuth } = useAuth();
@@ -83,7 +83,6 @@ export default function AuthModal() {
         throw new Error(data.error || "Registration failed");
       }
 
-      // Auto-login after successful registration
       const signInResult = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
@@ -207,6 +206,17 @@ export default function AuthModal() {
               onChange={handleInputChange}
             />
           </div>
+          {isLoginForm && (
+            <div className="text-right text-sm -mt-2">
+              <Link
+                href="/auth/forgot-password"
+                onClick={closeAuthModal}
+                className="text-gray-500 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          )}
 
           <button
             type="submit"
@@ -245,15 +255,4 @@ export default function AuthModal() {
   );
 }
 
-
-
-
-//more for modal background
-//Glassmorphism Effect : which is implemented now
-
-//(Almost Fully Transparent):
-//<div className="fixed inset-0 bg-black/5 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-
-//Shows Website Content Clearly:
-{/* <div className="fixed inset-0 bg-transparent backdrop-blur-md flex items-center justify-center z-50 p-4"> */}
 

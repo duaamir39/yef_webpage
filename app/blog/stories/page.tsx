@@ -5,7 +5,8 @@ import { client } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/image';
 import { groq } from 'next-sanity';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useAuth } from '@/app/context/AuthContext'; 
+
 
 const BLOG_POSTS_QUERY = groq`*[_type == "blog"] | order(_createdAt desc) {
   _id,
@@ -30,6 +31,7 @@ const BlogSkeleton = () => (
 export default function BlogSection() {
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { openAuthModal } = useAuth();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -81,11 +83,12 @@ export default function BlogSection() {
                   <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                     {post.shortDescription}
                   </p>
-                  <Link href={`/blog/stories/${post.slug}`} className="inline-block">
-                    <button className="bg-[#024da1] text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors">
-                      Read More
-                    </button>
-                  </Link>
+                  <button
+  onClick={() => openAuthModal(`/blog/stories/${post.slug}`)}
+  className="bg-[#024da1] text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors"
+ >
+  Read More
+ </button>
                 </div>
               </div>
             ))}

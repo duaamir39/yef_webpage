@@ -5,8 +5,8 @@ import { client } from '@/sanity/lib/client';
 import { urlForImage } from '@/sanity/lib/image';
 import { groq } from 'next-sanity';
 import Image from 'next/image';
-import Link from 'next/link';
 import { toPlainText } from '@portabletext/react';
+import { useAuth } from '@/app/context/AuthContext';
 
 const TEAM_MEMBERS_QUERY = groq`*[_type == "teamMember"] {
   _id,
@@ -33,6 +33,7 @@ const TeamMemberSkeleton = () => (
 export default function TeamPage() {
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { openAuthModal } = useAuth();
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
@@ -88,11 +89,12 @@ export default function TeamPage() {
                   <p className="text-sm text-gray-600 my-2">{member.title}</p>
                 </div>
                 {member.bio && (
-                  <Link href={`/about-us/team/${member.slug}`}>
-                    <p className="text-sm text-gray-500 my-2 line-clamp-2 hover:underline focus:outline-none cursor-pointer">
-                      {toPlainText(member.bio)}
-                    </p>
-                  </Link>
+                  <button 
+ onClick={() => openAuthModal(`/about-us/team/${member.slug}`)}
+ className="text-sm text-gray-500 my-2 line-clamp-2 hover:underline focus:outline-none cursor-pointer text-left w-full"
+ >
+ {toPlainText(member.bio)}
+ </button>
                 )}
               </div>
             </div>
