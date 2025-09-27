@@ -144,7 +144,7 @@ export default function DonatePage() {
               type="button"
               variant={selectedAmount === "custom" ? "default" : "outline"}
               onClick={() => setSelectedAmount("custom")}
-              className={`w-full sm:w-64 mx-auto block text-left text-lg font-medium h-12 ${
+              className={`w-full mx-auto block text-left text-lg font-medium h-12 ${
                 selectedAmount === "custom"
                   ? "bg-[#024da1] hover:bg-[#024da1]/90"
                   : "hover:border-[#024da1]"

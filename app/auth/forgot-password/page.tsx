@@ -4,6 +4,11 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/app/context/AuthContext';
 
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -42,9 +47,9 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md rounded-lg border-2 border-[#024da1] bg-white p-6 shadow-xl">
-        <div className="text-center mb-6">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-white p-2 border border-gray-200">
+      <Card className="w-full max-w-md shadow-xl border-2 border-[#024da1] rounded-md ">
+        <CardHeader className="text-center">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200 bg-white p-2">
             <Image
               src="/images/logo.JPG"
               alt="YEF Logo"
@@ -53,55 +58,60 @@ export default function ForgotPasswordPage() {
               className="rounded-full object-contain"
             />
           </div>
-          <h2 className="text-2xl font-bold text-[#024da1]">Forgot Password?</h2>
-          <p className="text-gray-600 mt-2">Enter your email to receive a reset link.</p>
-        </div>
+          <CardTitle className="text-2xl font-bold text-[#024da1]">Forgot Password?</CardTitle>
+          <CardDescription>Enter your email to receive a reset link.</CardDescription>
+        </CardHeader>
 
-        {message && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {message}
-          </div>
-        )}
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+        <CardContent>
+          {message && (
+            <Alert className="mb-4 bg-green-100 border-green-400 text-green-700">
+              <AlertDescription>{message}</AlertDescription>
+            </Alert>
+          )}
+          {error && (
+            <Alert className="mb-4 bg-red-100 border-red-400 text-red-700">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1]"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-[#024da1] text-white py-3 px-4 rounded-md hover:bg-[#013a7c] transition-colors disabled:opacity-50 font-medium"
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 p-4"
           >
-            {isLoading ? 'Sending...' : 'Send Reset Link'}
-          </button>
-        </form>
+            <div className="space-y-2">
+              <label htmlFor="email" className="text-sm font-medium">
+                Email Address
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-12"
+              />
+            </div>
+            <Button
+              type="submit"
+              className="w-full h-12 bg-[#024da1] hover:bg-[#013a7c] border-0"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Sending...' : 'Send Reset Link'}
+            </Button>
+          </form>
+        </CardContent>
 
-        <div className="mt-6 text-center">
-           <button 
+        <CardFooter className="justify-center">
+          <Button
+            variant="link"
             onClick={() => openAuthModal()}
-            className="text-[#024da1] hover:text-[#013a7c] font-medium text-sm"
+            className="text-[#024da1] hover:text-[#013a7c] text-sm"
           >
             Back to Sign In
-          </button>
-        </div>
-      </div>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
