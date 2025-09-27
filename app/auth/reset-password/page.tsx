@@ -16,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { PasswordInput } from '@/app/components/PasswordInput';
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -110,29 +111,27 @@ export default function ResetPasswordPage() {
               <label htmlFor="password" className="text-sm font-medium">
                 New Password
               </label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter new password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-12"
-              />
+             <PasswordInput
+  id="password"
+  placeholder="Enter new password"
+  required
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  label="New Password"
+/>
             </div>
             <div className="space-y-2">
               <label htmlFor="confirmPassword" className="text-sm font-medium">
                 Confirm New Password
               </label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm new password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="h-12"
-              />
+              <PasswordInput
+  id="confirmPassword"
+  placeholder="Confirm new password"
+  required
+  value={confirmPassword}
+  onChange={(e) => setConfirmPassword(e.target.value)}
+  label="Confirm New Password"
+/>
             </div>
             <Button
               type="submit"

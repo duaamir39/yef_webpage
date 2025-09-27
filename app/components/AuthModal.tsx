@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
 import { FaGoogle } from 'react-icons/fa';
+import { PasswordInput } from './PasswordInput';
 
 export default function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, redirectAfterAuth } = useAuth();
@@ -196,16 +197,15 @@ export default function AuthModal() {
             >
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1]"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
+            <PasswordInput
+  id="password"
+  name="password"
+  placeholder="Enter your password"
+  required
+  value={formData.password}
+  onChange={handleInputChange}
+  label="Password"
+/>
           </div>
           {isLoginForm && (
             <div className="text-right text-sm -mt-2">
