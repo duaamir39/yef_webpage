@@ -1,14 +1,14 @@
 "use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
-import { FaGoogle } from 'react-icons/fa';
-import { PasswordInput } from './PasswordInput';
+import { FaGoogle } from "react-icons/fa";
+import { PasswordInput } from "./PasswordInput";
 
 export default function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, redirectAfterAuth } = useAuth();
@@ -111,29 +111,28 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 bg-white/20 backdrop-blur-lg flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg w-full max-w-md p-6 relative border-2 border-[#024da1] shadow-xl">
+      <div className="bg-white rounded-lg w-full max-w-md p-4 relative border-2 border-[#024da1] shadow-xl">
         <button
           onClick={closeAuthModal}
-          className="absolute top-4 right-4 text-[#024da1] hover:text-[#013a7c]"
+          className="absolute top-3 right-3 text-[#024da1] hover:text-[#013a7c]"
         >
-          <X size={24} />
+          <X size={22} />
         </button>
 
-        <div className="text-center mb-6">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-white p-2 border border-gray-200">
+        <div className="text-center mb-4">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2 bg-white p-1 border border-gray-200">
             <Image
               src="/images/logo.JPG"
               alt="YEF Logo"
-              width={64}
-              height={64}
+              width={48}
+              height={48}
               className="rounded-full object-contain"
             />
           </div>
-
-          <h2 className="text-2xl font-bold text-[#024da1]">
+          <h2 className="text-xl font-bold text-[#024da1]">
             {isLoginForm ? "Welcome Back" : "Join Us"}
           </h2>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-1 text-sm">
             {isLoginForm
               ? "Sign in to continue"
               : "Create your account to get started"}
@@ -141,14 +140,14 @@ export default function AuthModal() {
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-3 text-sm">
             {error}
           </div>
         )}
 
         <form
           onSubmit={isLoginForm ? handleLogin : handleRegister}
-          className="space-y-4"
+          className="space-y-3"
         >
           {!isLoginForm && (
             <div>
@@ -163,7 +162,7 @@ export default function AuthModal() {
                 name="name"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1]"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1] text-sm"
                 placeholder="Enter your full name"
                 value={formData.name}
                 onChange={handleInputChange}
@@ -183,7 +182,7 @@ export default function AuthModal() {
               name="email"
               type="email"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#024da1] focus:border-[#024da1] text-sm"
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleInputChange}
@@ -198,17 +197,18 @@ export default function AuthModal() {
               Password
             </label>
             <PasswordInput
-  id="password"
-  name="password"
-  placeholder="Enter your password"
-  required
-  value={formData.password}
-  onChange={handleInputChange}
-  label="Password"
-/>
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+              value={formData.password}
+              onChange={handleInputChange}
+              label="Password"
+            />
           </div>
+
           {isLoginForm && (
-            <div className="text-right text-sm -mt-2">
+            <div className="text-right text-xs -mt-1">
               <Link
                 href="/auth/forgot-password"
                 onClick={closeAuthModal}
@@ -222,7 +222,7 @@ export default function AuthModal() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#024da1] text-white py-3 px-4 rounded-md hover:bg-[#013a7c] transition-colors disabled:opacity-50 font-medium"
+            className="w-full bg-[#024da1] text-white py-2.5 px-4 rounded-md hover:bg-[#013a7c] transition-colors disabled:opacity-50 font-medium text-sm"
           >
             {isLoading
               ? "Please wait..."
@@ -232,33 +232,35 @@ export default function AuthModal() {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <button
             onClick={() => {
               setIsLoginForm(!isLoginForm);
               setError("");
             }}
-            className="text-[#024da1] hover:text-[#013a7c] font-medium text-sm"
+            className="text-[#024da1] hover:text-[#013a7c] font-medium text-xs"
           >
             {isLoginForm
               ? "Don't have an account? Sign up"
               : "Already have an account? Sign in"}
           </button>
         </div>
- <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-center text-sm text-gray-600 mb-4">Or continue with</h3>
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => signIn('google')} 
-                className="flex items-center justify-center w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
-              >
-                <FaGoogle className="h-5 w-5 mr-2" />
-                Google
-              </button>
-            </div>
-          </div>
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
+
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <h3 className="text-center text-xs text-gray-600 mb-3">
+            Or continue with
+          </h3>
+          <button
+            onClick={() => signIn("google")}
+            className="flex items-center justify-center w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+          >
+            <FaGoogle className="h-4 w-4 mr-2" />
+            Google
+          </button>
+        </div>
+
+        <div className="mt-4 pt-3 border-t border-gray-200">
+          <p className="text-[10px] text-gray-500 text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>
@@ -266,5 +268,3 @@ export default function AuthModal() {
     </div>
   );
 }
-
-

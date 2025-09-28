@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-
 const FIXED_AMOUNTS = [1000, 2500, 5000, 10000];
+
 const DonationSkeleton = () => (
   <Card className="shadow-xl border border-gray-200">
     <CardHeader>
@@ -58,6 +58,7 @@ export default function DonatePage() {
   const [frequency, setFrequency] = useState<"one-time" | "monthly">("one-time");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (status === "loading") {
     return (
@@ -88,17 +89,35 @@ export default function DonatePage() {
 
     setIsProcessing(true);
     setIsSuccess(false);
+    setErrorMessage(null);
 
-    console.log(
-      `Processing ${frequency} donation of Rs. ${donationValue} for user: ${session?.user?.email}`
-    );
+    try {
+      const res = await fetch("/api/donate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: session?.user?.email,
+          amount: donationValue,
+          frequency,
+        }),
+      });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error || "Something went wrong");
+      }
 
-    setIsProcessing(false);
-    setIsSuccess(true);
+      setIsSuccess(true);
+      setCustomAmount("");
+      setSelectedAmount(5000);
 
-    setTimeout(() => setIsSuccess(false), 5000);
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (err: any) {
+      console.error("Donation error:", err);
+      setErrorMessage(err.message || "Failed to process donation");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const isFormValid = donationValue > 0;
@@ -122,6 +141,7 @@ export default function DonatePage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Fixed donation buttons */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {FIXED_AMOUNTS.map((amount) => (
                 <Button
@@ -207,26 +227,30 @@ export default function DonatePage() {
           </CardContent>
 
           <CardFooter className="flex flex-col items-center space-y-4">
-            <form onSubmit={handleSubmit} className="w-full flex justify-center">
-              {isSuccess ? (
-                <div className="bg-[#eef5fd] border border-[#024da1] text-[#024da1] px-4 py-3 rounded-lg flex items-center justify-center mb-4">
+            <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-4">
+              {isSuccess && (
+                <div className="bg-[#eef5fd] border border-[#024da1] text-[#024da1] px-4 py-3 rounded-lg flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 mr-2" />
                   <span className="font-bold">
                     Thank you for your {frequency} donation of{" "}
                     {formatCurrency(donationValue)}!
                   </span>
                 </div>
-              ) : (
-                <Button
-                  type="submit"
-                  disabled={!isFormValid || isProcessing}
-                  className="w-full sm:w-64 h-12 text-lg font-bold bg-[#024da1] hover:bg-[#024da1]/90"
-                >
-                  {isProcessing
-                    ? "Processing..."
-                    : `Donate ${formatCurrency(donationValue)}`}
-                </Button>
               )}
+
+              {errorMessage && (
+                <p className="text-red-500 font-semibold">{errorMessage}</p>
+              )}
+
+              <Button
+                type="submit"
+                disabled={!isFormValid || isProcessing}
+                className="w-full sm:w-64 h-12 text-lg font-bold bg-[#024da1] hover:bg-[#024da1]/90"
+              >
+                {isProcessing
+                  ? "Processing..."
+                  : `Donate ${formatCurrency(donationValue)}`}
+              </Button>
             </form>
 
             <p className="text-sm text-center text-gray-500">
