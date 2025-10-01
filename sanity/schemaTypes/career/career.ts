@@ -41,17 +41,36 @@ const career = defineType({
     }),
 
     defineField({
-      name: "badge1",
+      name: "badge",
       title: "Work Type",
       type: "string",
       description: "Example: Full-time, Remote, On-site",
     }),
 
     defineField({
-      name: "badge2",
-      title: "Duration / Level",
+      name: "category",
+      title: "Category",
       type: "string",
-      description: "Example: 3 Months, Internship, Entry-level, Contract",
+      options: {
+        list: [
+          { title: "Technology", value: "technology" },
+          { title: "Design", value: "design" },
+          { title: "Marketing", value: "marketing" },
+          { title: "Management", value: "management" },
+          { title: "Internship", value: "internship" },
+          { title: "Others", value: "others" },
+        ],
+        layout: "dropdown",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
+      name: "Location",
+      title: "Duration / Location",
+      type: "string",
+      description:
+        "Example: 3 Months, Internship, Entry-level, Contract, onsite, karachi",
     }),
 
     defineField({

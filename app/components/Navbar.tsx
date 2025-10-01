@@ -93,7 +93,7 @@ const Navbar = () => {
                 <Link href={item.path}>
                   <Button
                     variant="ghost"
-                    className={`text-[#024da1] hover:text-[#013a7c] hover:bg-transparent`}
+                    className={`text-[#024da1] hover:text-[#013a7c] hover:bg-transparent cursor-pointer`}
                   >
                     {item.name}
                   </Button>
@@ -105,7 +105,7 @@ const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-[#024da1] hover:text-[#013a7c] hover:bg-transparent"
+                    className="text-[#024da1] hover:text-[#013a7c] hover:bg-transparent cursor-pointer"
                   >
                     {item.name}
                     <ChevronDown className="ml-1 h-4 w-4" />

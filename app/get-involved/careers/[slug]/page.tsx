@@ -13,8 +13,8 @@ async function getCareer(slug: string) {
     title,
     subtitle,
     description,
-    badge1,
-    badge2,
+    badge,
+    Location,
     "image": image{asset->{url}},
     applyLink
   }`;
@@ -25,9 +25,10 @@ async function getCareer(slug: string) {
 export default async function careerDetailsPage({ params }: CareerPageProps) {
   const career = await getCareer(params.slug);
 
+  console.log(career);
+
   return (
     <div className="max-w-3xl mx-auto p-6">
-      
       {/* Image */}
       {career.image && (
         <div className="relative w-full aspect-[16/9] mb-6">
@@ -48,14 +49,14 @@ export default async function careerDetailsPage({ params }: CareerPageProps) {
 
       {/* Badges */}
       <div className="flex gap-2 mt-3">
-        {career.badge1 && (
+        {career.badge && (
           <Badge className="bg-blue-100 text-[#024da1] hover:bg-blue-200">
-            {career.badge1}
+            {career.badge}
           </Badge>
         )}
-        {career.badge2 && (
-          <Badge className="bg-green-100 text-green-700 hover:bg-green-200">
-            {career.badge2}
+        {career.Location && (
+          <Badge className="bg-gray-100 text-gray-700 hover:bg-gray-200">
+            {career.Location}
           </Badge>
         )}
       </div>
@@ -68,7 +69,9 @@ export default async function careerDetailsPage({ params }: CareerPageProps) {
       {/* Apply Button */}
       <div className="mt-8">
         <a href={career.applyLink} target="_blank" rel="noopener noreferrer">
-          <Button className="bg-[#024da1] hover:bg-[#013a7c]">Apply Now</Button>
+          <Button className="bg-[#024da1] hover:bg-[#013a7c] cursor-pointer">
+            Apply Now
+          </Button>
         </a>
       </div>
     </div>
