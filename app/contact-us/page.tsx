@@ -41,12 +41,14 @@ export default function ContactPage() {
           <div className="bg-white rounded-2xl shadow-md p-6 text-center">
             <div className="text-blue-600 text-4xl mb-2">📞</div>
             <h3 className="text-lg font-semibold">Call Us</h3>
-            <p className="text-gray-600 text-sm">+92 300 1234567</p>
+            <p className="text-gray-600 text-sm">+92 344 5907911</p>
           </div>
           <div className="bg-white rounded-2xl shadow-md p-6 text-center">
             <div className="text-blue-600 text-4xl mb-2">✉️</div>
             <h3 className="text-lg font-semibold">Email</h3>
-            <p className="text-gray-600 text-sm">youthevolutionfoundation25@gmail.com</p>
+            <p className="text-gray-600 text-sm">
+              youthevolutionfoundation25@gmail.com
+            </p>
           </div>
         </div>
 
@@ -75,6 +77,11 @@ export default function ContactPage() {
 
               const data = await res.json();
               setStatus(data.message || "Success!");
+
+              // ✅ Clear form fields on success
+              if (res.ok) {
+                form.reset();
+              }
             } catch (err) {
               console.error(err);
               setStatus("Something went wrong!");
@@ -152,9 +159,8 @@ export default function ContactPage() {
           {/* Status Message */}
           {status && (
             <p
-              className={`text-center mt-4 font-medium ${
-                status.includes("wrong") ? "text-red-600" : "text-green-600"
-              }`}
+              className={`text-center mt-4 font-medium ${status.includes("wrong") ? "text-red-600" : "text-green-600"
+                }`}
             >
               {status}
             </p>
