@@ -4,9 +4,11 @@ import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import React from "react";
 
-interface CareerPageProps {
-  params: { slug: string };
-}
+// You can remove this interface or leave it, but we will define the props
+// directly in the function signature for a better match with Next.js expectations.
+// interface CareerPageProps {
+//   params: { slug: string };
+// }
 
 async function getCareer(slug: string) {
   const query = `*[_type == "career" && slug.current == $slug][0]{
@@ -22,7 +24,19 @@ async function getCareer(slug: string) {
   return client.fetch(query, { slug });
 }
 
-export default async function careerDetailsPage({ params }: CareerPageProps) {
+// --------------------------------------------------------------------------
+// Fix is here: Define the props inline or use the correct `params` object type.
+// The type checking often works better when the component is defined with an
+// object destructuring directly in the argument, rather than a single interface.
+// For dynamic routes, we define the expected type for `params`.
+// --------------------------------------------------------------------------
+export default async function careerDetailsPage({ 
+  params,
+}: {
+  params: { slug: string };
+  // You might optionally include searchParams here if you needed them:
+  // searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const career = await getCareer(params.slug);
 
   console.log(career);
