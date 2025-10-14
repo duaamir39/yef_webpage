@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
-import { notFound } from "next/navigation"; // optional fallback
+import { notFound } from "next/navigation"; 
 
 interface CareerPageProps {
   params: Promise<{ slug: string }>;
@@ -22,7 +22,7 @@ async function getCareer(slug: string) {
 }
 
 export default async function CareerDetailsPage({ params }: CareerPageProps) {
-  const { slug } = await params; // ✅ await params (important)
+  const { slug } = await params; 
   const career = await getCareer(slug);
 
   if (!career) return notFound();
@@ -69,4 +69,4 @@ export default async function CareerDetailsPage({ params }: CareerPageProps) {
   );
 }
 
-export const dynamic = "force-dynamic"; // optional
+export const dynamic = "force-dynamic"; 
