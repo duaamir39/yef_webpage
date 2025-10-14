@@ -13,14 +13,18 @@ import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import { client } from "@/sanity/lib/client";
 import imageUrlBuilder from "@sanity/image-url";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// ✅ Sanity Builder
+// ✅ Import your DonateButton using relative path
+import DonateButton from "../../components/DonateButton";
+
+// Sanity Builder
 const builder = imageUrlBuilder(client);
 function urlFor(source: any) {
   return builder.image(source).url();
 }
 
-// ✅ Achievement type
+// Achievement type
 type Achievement = {
   _id: string;
   title: string;
@@ -33,9 +37,11 @@ export default function ImpactPage() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
   const [selected, setSelected] = useState<Achievement | null>(null);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [isClient, setIsClient] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch data from Sanity
   useEffect(() => {
+    setIsClient(true);
     async function fetchData() {
       const data = await client.fetch(
         `*[_type == "achievement"] | order(_createdAt desc){
@@ -47,6 +53,7 @@ export default function ImpactPage() {
         }`
       );
       setAchievements(data);
+      setLoading(false);
     }
     fetchData();
   }, []);
@@ -70,65 +77,76 @@ export default function ImpactPage() {
           </h1>
           <p className="text-lg leading-relaxed opacity-90">
             Since our founding in 2024, Youth Evolution Foundation has been
-            driving education, sustainability, and unity across Pakistan—
-            equipping young people with the tools to create lasting global
-            change.
+            driving education, sustainability, and unity across Pakistan—equipping young people with the tools to create lasting global change.
           </p>
         </div>
       </section>
 
       {/* Impact in Numbers */}
       <section ref={ref} className="px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="pt-8">
-              <GraduationCap className="mx-auto h-12 w-12 text-indigo-600 mb-4" />
-              <p className="text-3xl font-extrabold text-gray-900">
-                {inView && <CountUp start={0} end={1500} duration={0.5} />}+
-              </p>
-              <p className="text-gray-600">
-                Students Empowered with digital and life skills
-              </p>
-            </CardContent>
-          </Card>
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} className="text-center shadow-md rounded-2xl bg-gray-100 animate-pulse h-64">
+                <CardContent className="pt-8">
+                  <Skeleton className="mx-auto h-12 w-12 mb-4" />
+                  <Skeleton className="h-8 w-20 mx-auto mb-2" />
+                  <Skeleton className="h-4 w-3/4 mx-auto" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="pt-8">
+                <GraduationCap className="mx-auto h-12 w-12 mb-4" style={{ color: "#024da1" }} />
+                <p className="text-3xl font-extrabold text-gray-900">
+                  {isClient && inView && <CountUp start={0} end={1500} duration={0.5} />}+
+                </p>
+                <p className="text-gray-600">
+                  Students Empowered with digital and life skills
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="pt-8">
-              <School className="mx-auto h-12 w-12 text-indigo-600 mb-4" />
-              <p className="text-3xl font-extrabold text-gray-900">
-                {inView && <CountUp start={0} end={5} duration={0.5} />}
-              </p>
-              <p className="text-gray-600">
-                Schools Supported with resources, workshops, and training
-              </p>
-            </CardContent>
-          </Card>
+            <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="pt-8">
+                <School className="mx-auto h-12 w-12 mb-4" style={{ color: "#024da1" }} />
+                <p className="text-3xl font-extrabold text-gray-900">
+                  {isClient && inView && <CountUp start={0} end={5} duration={0.5} />}
+                </p>
+                <p className="text-gray-600">
+                  Schools Supported with resources, workshops, and training
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="pt-8">
-              <Users className="mx-auto h-12 w-12 text-indigo-600 mb-4" />
-              <p className="text-3xl font-extrabold text-gray-900">
-                {inView && <CountUp start={0} end={50} duration={0.5} />}+
-              </p>
-              <p className="text-gray-600">
-                Volunteers driving community-led change
-              </p>
-            </CardContent>
-          </Card>
+            <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="pt-8">
+                <Users className="mx-auto h-12 w-12 mb-4" style={{ color: "#024da1" }} />
+                <p className="text-3xl font-extrabold text-gray-900">
+                  {isClient && inView && <CountUp start={0} end={50} duration={0.5} />}+
+                </p>
+                <p className="text-gray-600">
+                  Volunteers driving community-led change
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="pt-8">
-              <Flag className="mx-auto h-12 w-12 text-indigo-600 mb-4" />
-              <p className="text-2xl font-extrabold text-gray-900">
-                {inView && <CountUp start={0} end={100} duration={0.5} />}%
-              </p>
-              <p className="text-gray-600">
-                Projects Across Pakistan bringing education and sustainability
-                initiatives to diverse communities
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="text-center shadow-md hover:shadow-lg transition rounded-2xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="pt-8">
+                <Flag className="mx-auto h-12 w-12 mb-4" style={{ color: "#024da1" }} />
+                <p className="text-2xl font-extrabold text-gray-900">
+                  {isClient && inView && <CountUp start={0} end={100} duration={0.5} />}%
+                </p>
+                <p className="text-gray-600">
+                  Projects Across Pakistan bringing education and sustainability initiatives to diverse communities
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </section>
 
       {/* Achievements Section */}
@@ -136,54 +154,59 @@ export default function ImpactPage() {
         <div className="max-w-6xl mx-auto text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-800">Our Achievements</h2>
           <p className="text-gray-600 mt-4">
-            Celebrating milestones that highlight our journey of empowering
-            youth and building communities.
+            Celebrating milestones that highlight our journey of empowering youth and building communities.
           </p>
         </div>
 
-        {/* Swiper with Pagination (6 per page) */}
-        <Swiper
-          spaceBetween={30}
-          navigation
-          pagination={{ clickable: true }}
-          modules={[Pagination, Navigation]}
-          className="max-w-6xl mx-auto"
-        >
-          {Array.from({ length: Math.ceil(achievements.length / 6) }).map(
-            (_, pageIndex) => (
-              <SwiperSlide key={pageIndex}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {achievements
-                    .slice(pageIndex * 6, pageIndex * 6 + 6)
-                    .map((a) => (
-                      <div
-                        key={a._id}
-                        className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
-                        onClick={() => setSelected(a)}
-                      >
-                        <img
-                          src={a.cover}
-                          alt={a.title}
-                          className="w-full h-56 object-cover"
-                        />
-                        <div className="p-4 text-center">
-                          <h3 className="text-xl font-semibold text-gray-800">
-                            {a.title}
-                          </h3>
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-64 w-full rounded-2xl bg-gray-200 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <Swiper
+            spaceBetween={30}
+            navigation
+            pagination={{ clickable: true }}
+            modules={[Pagination, Navigation]}
+            className="max-w-6xl mx-auto"
+          >
+            {Array.from({ length: Math.ceil(achievements.length / 6) }).map(
+              (_, pageIndex) => (
+                <SwiperSlide key={pageIndex}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {achievements
+                      .slice(pageIndex * 6, pageIndex * 6 + 6)
+                      .map((a) => (
+                        <div
+                          key={a._id}
+                          className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
+                          onClick={() => setSelected(a)}
+                        >
+                          <img
+                            src={a.cover}
+                            alt={a.title}
+                            className="w-full h-56 object-cover"
+                          />
+                          <div className="p-4 text-center">
+                            <h3 className="text-xl font-semibold text-gray-800">
+                              {a.title}
+                            </h3>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                </div>
-              </SwiperSlide>
-            )
-          )}
-        </Swiper>
+                      ))}
+                  </div>
+                </SwiperSlide>
+              )
+            )}
+          </Swiper>
+        )}
 
         {/* Modal */}
-        {selected && (
+        {selected && isClient && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl max-w-3xl w-full overflow-hidden relative">
-              {/* Close Button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -194,7 +217,6 @@ export default function ImpactPage() {
                 ✕
               </button>
 
-              {/* Swiper with Images */}
               <Swiper
                 spaceBetween={10}
                 slidesPerView={1}
@@ -215,7 +237,6 @@ export default function ImpactPage() {
                 ))}
               </Swiper>
 
-              {/* Description */}
               <div className="p-6">
                 <h3 className="text-2xl font-bold mb-3">{selected.title}</h3>
                 <p className="text-gray-700">{selected.description}</p>
@@ -291,19 +312,19 @@ export default function ImpactPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <Card className="p-8 shadow-sm rounded-2xl bg-white">
               <CardContent>
-                <p className="text-3xl font-extrabold text-indigo-600">85%</p>
+                <p className="text-3xl font-extrabold" style={{ color: "#024da1" }}>85%</p>
                 <p className="text-gray-600">Programs</p>
               </CardContent>
             </Card>
             <Card className="p-8 shadow-sm rounded-2xl bg-white">
               <CardContent>
-                <p className="text-3xl font-extrabold text-indigo-600">10%</p>
+                <p className="text-3xl font-extrabold" style={{ color: "#024da1" }}>10%</p>
                 <p className="text-gray-600">Training & Operations</p>
               </CardContent>
             </Card>
             <Card className="p-8 shadow-sm rounded-2xl bg-white">
               <CardContent>
-                <p className="text-3xl font-extrabold text-indigo-600">5%</p>
+                <p className="text-3xl font-extrabold" style={{ color: "#024da1" }}>5%</p>
                 <p className="text-gray-600">Outreach</p>
               </CardContent>
             </Card>
@@ -312,22 +333,21 @@ export default function ImpactPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="text-center py-20 px-6 bg-gradient-to-r from-indigo-800 to-indigo-900 text-white">
-        <h2 className="text-4xl font-extrabold mb-8 tracking-tight">
-          Join Us in Building a Brighter Future
-        </h2>
-        <div className="flex justify-center gap-6 flex-wrap">
-          <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-            Donate Now
-          </Button>
-          <Button className="bg-indigo-600 hover:bg-indigo-500 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-            Volunteer With Us
-          </Button>
-          <Button className="bg-white text-indigo-800 hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
-            Partner With YEF
-          </Button>
-        </div>
-      </section>
+      <section className="text-center py-20 px-6 text-white" style={{ background: "linear-gradient(to right, #024da1, #024da1)" }}>
+  <h2 className="text-4xl font-extrabold mb-8 tracking-tight">
+    Join Us in Building a Brighter Future
+  </h2>
+  <div className="flex justify-center gap-6 flex-wrap">
+    {/* ✅DonateButton component */}
+    <DonateButton />
+    <Button className="bg-white text-[#024da1] hover:bg-gray-100 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
+      Volunteer With Us
+    </Button>
+    <Button className="bg-[#024da1] text-white hover:bg-blue-700 rounded-xl px-6 py-3 text-lg font-semibold shadow-lg transition">
+      Partner With YEF
+    </Button>
+  </div>
+</section>
     </div>
   );
 }

@@ -6,8 +6,8 @@ interface Career {
   slug: { current: string };
   subtitle?: string;
   description: string;
-  badge1?: string;
-  badge2?: string;
+  badge?: string;
+  Location?: string;
   image?: { asset: { url: string } };
   applyLink: string;
 }
@@ -22,8 +22,8 @@ export default function CareerLists({ careers }: { careers: Career[] }) {
           slug={career.slug.current}
           subtitle={career.subtitle}
           description={career.description}
-          badge1={career.badge1}
-          badge2={career.badge2}
+          badge={career.badge}
+          Location={career.Location}
           imageUrl={career.image?.asset?.url}
           applyLink={career.applyLink}
         />

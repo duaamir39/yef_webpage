@@ -23,7 +23,7 @@ export default function DonateButton() {
   return (
     <Button 
       onClick={handleDonateClick}
-      className="bg-[#024da1] hover:bg-[#013a7c] rounded-lg px-6 py-3 text-white text-lg"
+      className="bg-[#024da1] hover:bg-[#013a7c] rounded-lg px-6 py-3 text-white text-lg cursor-pointer"
     >
       Donate
     </Button>

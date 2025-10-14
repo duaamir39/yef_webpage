@@ -1,7 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -10,8 +17,8 @@ interface CareerCardProps {
   slug: string;
   subtitle?: string;
   description: string;
-  badge1?: string;
-  badge2?: string;
+  badge?: string;
+  Location?: string;
   imageUrl?: string;
   applyLink: string;
 }
@@ -21,14 +28,9 @@ export default function CareerCard({
   slug,
   subtitle,
   description,
-  badge1,
-  badge2,
-  imageUrl,
-  applyLink,
+  badge,
+  Location,
 }: CareerCardProps) {
-  
-console.log(slug)
-
   const shortDesc =
     description.length > 150
       ? description.substring(0, 150) + "..."
@@ -36,37 +38,30 @@ console.log(slug)
 
   return (
     <Card className="overflow-hidden rounded-2xl shadow-md">
-      {/* Image */}
-      {imageUrl && (
-        <div className="relative w-full h-48">
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
 
       {/* Content */}
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
-        {subtitle && <CardDescription>{subtitle}</CardDescription>}
+      <CardHeader className="flex justify-between">
+        <div className="w-[70%]">
+          <CardTitle className="text-xl font-semibold truncate">
+            {title}
+          </CardTitle>
+          {subtitle && <CardDescription>{subtitle}</CardDescription>}
+        </div>
+
+        {badge && (
+          <Badge
+            variant="secondary"
+            className="bg-green-100 text-green-700 hover:bg-green-200 ml-2"
+          >
+            {badge}
+          </Badge>
+        )}
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="h-[100px]">
         {/* Badges */}
-        <div className="flex gap-2 mb-3">
-          {badge1 && (
-            <Badge variant="secondary" className="bg-blue-100 text-[#024da1] hover:bg-blue-200">
-              {badge1}
-            </Badge>
-          )}
-          {badge2 && (
-            <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200">
-              {badge2}
-            </Badge>
-          )}
+        <div className="text-gray-600 text-sm gap-2 mb-3">
+          {Location}
         </div>
 
         {/* Description */}
@@ -74,18 +69,12 @@ console.log(slug)
       </CardContent>
 
       {/* Footer with Buttons */}
-      <CardFooter className="flex gap-3">
+      <CardFooter>
         <Link href={`/get-involved/careers/${slug}`} passHref>
-          <Button variant="link" className="text-[#024da1] px-0 cursor-pointer">
-            Read More
+          <Button variant="link" className="text-white px-4 bg-[#024da1] cursor-pointer hover:bg-[#013a7c]">
+            View and Apply
           </Button>
         </Link>
-
-        <a href={applyLink} target="_blank" rel="noopener noreferrer" className="ml-auto">
-          <Button className="bg-[#024da1] hover:bg-[#013a7c] cursor-pointer">
-            Apply Now
-          </Button>
-        </a>
       </CardFooter>
     </Card>
   );
