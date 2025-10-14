@@ -2,13 +2,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
-import React from "react";
+import { notFound } from "next/navigation"; // optional fallback
 
-// You can remove this interface or leave it, but we will define the props
-// directly in the function signature for a better match with Next.js expectations.
-// interface CareerPageProps {
-//   params: { slug: string };
-// }
+interface CareerPageProps {
+  params: Promise<{ slug: string }>;
+}
 
 async function getCareer(slug: string) {
   const query = `*[_type == "career" && slug.current == $slug][0]{
@@ -17,37 +15,24 @@ async function getCareer(slug: string) {
     description,
     badge,
     Location,
-    "image": image{asset->{url}},
+    "image": image.asset->url,
     applyLink
   }`;
-
   return client.fetch(query, { slug });
 }
 
-// --------------------------------------------------------------------------
-// Fix is here: Define the props inline or use the correct `params` object type.
-// The type checking often works better when the component is defined with an
-// object destructuring directly in the argument, rather than a single interface.
-// For dynamic routes, we define the expected type for `params`.
-// --------------------------------------------------------------------------
-export default async function careerDetailsPage({ 
-  params,
-}: {
-  params: { slug: string };
-  // You might optionally include searchParams here if you needed them:
-  // searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const career = await getCareer(params.slug);
+export default async function CareerDetailsPage({ params }: CareerPageProps) {
+  const { slug } = await params; // ✅ await params (important)
+  const career = await getCareer(slug);
 
-  console.log(career);
+  if (!career) return notFound();
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      {/* Image */}
       {career.image && (
         <div className="relative w-full aspect-[16/9] mb-6">
           <Image
-            src={career.image?.asset?.url}
+            src={career.image}
             alt={career.title}
             fill
             className="object-cover rounded-2xl"
@@ -55,13 +40,9 @@ export default async function careerDetailsPage({
         </div>
       )}
 
-      {/* Title + subtitle */}
       <h1 className="text-3xl font-bold text-[#024da1]">{career.title}</h1>
-      {career.subtitle && (
-        <p className="text-gray-500 mt-1">{career.subtitle}</p>
-      )}
+      {career.subtitle && <p className="text-gray-500 mt-1">{career.subtitle}</p>}
 
-      {/* Badges */}
       <div className="flex gap-2 mt-3">
         {career.badge && (
           <Badge className="bg-blue-100 text-[#024da1] hover:bg-blue-200">
@@ -75,12 +56,8 @@ export default async function careerDetailsPage({
         )}
       </div>
 
-      {/* Description */}
-      <div className="mt-6 text-gray-700 leading-relaxed">
-        {career.description}
-      </div>
+      <div className="mt-6 text-gray-700 leading-relaxed">{career.description}</div>
 
-      {/* Apply Button */}
       <div className="mt-8">
         <a href={career.applyLink} target="_blank" rel="noopener noreferrer">
           <Button className="bg-[#024da1] hover:bg-[#013a7c] cursor-pointer">
@@ -91,3 +68,5 @@ export default async function careerDetailsPage({
     </div>
   );
 }
+
+export const dynamic = "force-dynamic"; // optional
